@@ -387,7 +387,7 @@ extension DashboardStatsSummary {
 }
 
 enum DashboardTimeSaving {
-    private static let averageTypingSpeedWordsPerMinute: Double = 40
+    private static let averageTypingSpeedWordsPerMinute: Double = 100
 
     static func estimatedTypingTime(words: Int) -> TimeInterval {
         let estimatedTypingTimeInMinutes = Double(words) / averageTypingSpeedWordsPerMinute
