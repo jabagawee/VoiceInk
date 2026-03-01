@@ -53,7 +53,7 @@ local: check setup
 	xcodebuild -project VoiceInk.xcodeproj -scheme VoiceInk -configuration Debug \
 		-derivedDataPath "$(LOCAL_DERIVED_DATA)" \
 		-xcconfig LocalBuild.xcconfig \
-		CODE_SIGN_IDENTITY="VoiceInk Local" \
+		CODE_SIGN_IDENTITY="Local Development" \
 		CODE_SIGNING_REQUIRED=NO \
 		CODE_SIGNING_ALLOWED=YES \
 		DEVELOPMENT_TEAM="" \
@@ -62,6 +62,8 @@ local: check setup
 		build
 	@APP_PATH="$(LOCAL_DERIVED_DATA)/Build/Products/Debug/VoiceInk.app" && \
 	if [ -d "$$APP_PATH" ]; then \
+		echo "Re-signing app bundle..."; \
+		codesign --force --deep -s "Local Development" --entitlements $(CURDIR)/VoiceInk/VoiceInk.local.entitlements "$$APP_PATH"; \
 		echo "Copying VoiceInk.app to ~/Downloads..."; \
 		rm -rf "$$HOME/Downloads/VoiceInk.app"; \
 		ditto "$$APP_PATH" "$$HOME/Downloads/VoiceInk.app"; \
