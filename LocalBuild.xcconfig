@@ -3,9 +3,9 @@
 // Used by `make local` — does NOT affect Debug or Release configurations.
 
 // Self-signed certificate for stable code signature across rebuilds (preserves macOS permissions)
-// Create once: Keychain Access → Certificate Assistant → Create Certificate → "VoiceInk Local" → Code Signing
+// Create once: Keychain Access → Certificate Assistant → Create Certificate → "Local Development" → Code Signing
 // Then trust it: double-click cert → Trust → Code Signing → Always Trust
-CODE_SIGN_IDENTITY = VoiceInk Local
+CODE_SIGN_IDENTITY = Local Development
 CODE_SIGN_STYLE = Manual
 DEVELOPMENT_TEAM =
 PROVISIONING_PROFILE_SPECIFIER =
