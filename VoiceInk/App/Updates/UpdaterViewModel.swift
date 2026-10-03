@@ -37,10 +37,9 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
 
         let updater = updaterController.updater
 
-        // VoiceInk owns automatic discovery through Sparkle's non-presenting probe.
-        // Keeping Sparkle's scheduler disabled prevents it from showing an update
-        // window independently of the Dashboard button.
-        updater.automaticallyChecksForUpdates = false
+        // Sparkle's own scheduler follows the automatic check preference, so its
+        // standard update window can appear independently of the Dashboard.
+        updater.automaticallyChecksForUpdates = checksForUpdatesWhenDashboardAppears
         updaterController.startUpdater()
 
         canCheckForUpdates = updater.canCheckForUpdates
@@ -53,6 +52,7 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
 
         checksForUpdatesWhenDashboardAppears = value
         defaults.set(value, forKey: DefaultsKey.automaticUpdateChecks)
+        updaterController.updater.automaticallyChecksForUpdates = value
 
         if value {
             checkForUpdateInformationIfPossible()
@@ -65,6 +65,8 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
         guard checksForUpdatesWhenDashboardAppears else { return }
 
         let updater = updaterController.updater
+        // Sparkle's scheduler owns automatic checks; a probe started here at launch makes it skip its due check.
+        guard !updater.automaticallyChecksForUpdates else { return }
         guard !updater.sessionInProgress else { return }
 
         if let lastCheckDate = updater.lastUpdateCheckDate {
